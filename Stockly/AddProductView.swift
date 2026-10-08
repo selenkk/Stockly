@@ -4,6 +4,7 @@ struct AddProductView: View {
     
     @State private var productURL = ""
     @State private var selectedSize = "S"
+    @State private var showError = false
     
     @Environment(\.dismiss) private var dismiss
     
@@ -78,7 +79,18 @@ struct AddProductView: View {
                     }
                 }
                 
+                if showError {
+                    Text("Lütfen bir ürün linki gir.")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+                
                 Button {
+                    
+                    if productURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        showError = true
+                        return
+                    }
                     
                     let newProduct = Product(
                         url: productURL,
