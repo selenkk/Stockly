@@ -2,7 +2,7 @@ import SwiftUI
 
 struct TrackingView: View {
     
-    let products: [Product]
+    @Binding var products: [Product]
     
     var body: some View {
         ZStack {
@@ -35,19 +35,67 @@ struct TrackingView: View {
                 
             } else {
                 
-                List(products) { product in
+                ScrollView {
                     
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(spacing: 15) {
                         
-                        Text(product.url)
-                            .font(.headline)
-                        
-                        Text("Beden: \(product.size)")
-                            .foregroundStyle(.secondary)
+                        ForEach(products) { product in
+                            
+                            VStack(alignment: .leading, spacing: 12) {
+                                
+                                HStack {
+                                    
+                                    Image(systemName: "bag.fill")
+                                        .font(.system(size: 25))
+                                        .foregroundStyle(.purple)
+                                    
+                                    Text("Takip Edilen Ürün")
+                                        .font(.headline)
+                                    
+                                    Spacer()
+                                    
+                                    Button {
+                                        products.removeAll { item in
+                                            item.id == product.id
+                                        }
+                                    } label: {
+                                        Image(systemName: "trash")
+                                            .foregroundStyle(.red)
+                                    }
+                                }
+                                
+                                Divider()
+                                
+                                Text(product.url)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                                    .lineLimit(2)
+                                
+                                HStack {
+                                    
+                                    Text("Beden")
+                                        .foregroundStyle(.secondary)
+                                    
+                                    Spacer()
+                                    
+                                    Text(product.size)
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundStyle(.purple)
+                                }
+                                
+                                Text("Stok bekleniyor...")
+                                    .font(.caption)
+                                    .foregroundStyle(.secondary)
+                            }
+                            .padding(20)
+                            .background(Color.white)
+                            .clipShape(
+                                RoundedRectangle(cornerRadius: 20)
+                            )
+                        }
                     }
-                    .padding(.vertical, 8)
+                    .padding(20)
                 }
-                .scrollContentBackground(.hidden)
             }
         }
         .navigationTitle("Takip Ettiklerim")
@@ -57,6 +105,6 @@ struct TrackingView: View {
 
 #Preview {
     NavigationStack {
-        TrackingView(products: [])
+        TrackingView(products: .constant([]))
     }
 }

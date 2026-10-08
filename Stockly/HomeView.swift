@@ -55,7 +55,7 @@ struct HomeView: View {
                 }
                 
                 NavigationLink {
-                    TrackingView(products: products)
+                    TrackingView(products: $products)
                 } label: {
                     Text("Takip Ettiklerim")
                         .font(.system(size: 17, weight: .semibold))
