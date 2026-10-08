@@ -2,6 +2,8 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @State private var products: [Product] = []
+    
     var body: some View {
         ZStack {
             
@@ -31,7 +33,9 @@ struct HomeView: View {
                     .foregroundStyle(.secondary)
                 
                 NavigationLink {
-                    AddProductView()
+                    AddProductView { product in
+                        products.append(product)
+                    }
                 } label: {
                     Text("Ürün Ekle")
                         .font(.system(size: 17, weight: .semibold))
@@ -45,6 +49,20 @@ struct HomeView: View {
                                 endPoint: .trailing
                             )
                         )
+                        .clipShape(
+                            RoundedRectangle(cornerRadius: 15)
+                        )
+                }
+                
+                NavigationLink {
+                    TrackingView(products: products)
+                } label: {
+                    Text("Takip Ettiklerim")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(.purple)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.white)
                         .clipShape(
                             RoundedRectangle(cornerRadius: 15)
                         )

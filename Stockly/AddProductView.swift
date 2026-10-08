@@ -5,7 +5,11 @@ struct AddProductView: View {
     @State private var productURL = ""
     @State private var selectedSize = "S"
     
+    @Environment(\.dismiss) private var dismiss
+    
     let sizes = ["XS", "S", "M", "L", "XL"]
+    
+    let onAdd: (Product) -> Void
     
     var body: some View {
         ZStack {
@@ -46,6 +50,7 @@ struct AddProductView: View {
                         .font(.headline)
                     
                     HStack(spacing: 10) {
+                        
                         ForEach(sizes, id: \.self) { size in
                             
                             Button {
@@ -74,7 +79,15 @@ struct AddProductView: View {
                 }
                 
                 Button {
-                    // Takip başlatma işlemini daha sonra yapacağız.
+                    
+                    let newProduct = Product(
+                        url: productURL,
+                        size: selectedSize
+                    )
+                    
+                    onAdd(newProduct)
+                    dismiss()
+                    
                 } label: {
                     Text("Takibe Başla")
                         .font(.system(size: 17, weight: .semibold))
@@ -104,6 +117,8 @@ struct AddProductView: View {
 
 #Preview {
     NavigationStack {
-        AddProductView()
+        AddProductView { product in
+            print(product.url)
+        }
     }
 }
